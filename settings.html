@@ -1,0 +1,210 @@
+<!DOCTYPE html>
+<html lang="km">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Littlemaker - ការកំណត់</title>
+  <link rel="stylesheet" href="css/style.css">
+</head>
+<body>
+<div class="app">
+  <aside class="sidebar">
+    <div class="sidebar-logo">
+      <div class="logo-title">🏪 Littlemaker</div>
+      <span class="logo-sub" data-t="app_tagline">ប្រព័ន្ធគ្រប់គ្រងអាជីវកម្ម</span>
+    </div>
+    <nav class="sidebar-nav">
+      <div class="nav-section-label">MENU</div>
+      <a href="index.html" class="nav-link"><span class="nav-icon">📊</span><span data-t="nav_dashboard">ផ្ទាំងគ្រប់គ្រង</span></a>
+      <a href="products.html" class="nav-link"><span class="nav-icon">📦</span><span data-t="nav_products">ផលិតផល</span></a>
+      <a href="sales.html" class="nav-link"><span class="nav-icon">💰</span><span data-t="nav_sales">ការលក់</span></a>
+      <a href="purchases.html" class="nav-link"><span class="nav-icon">🛒</span><span data-t="nav_purchases">ការទិញ</span></a>
+      <div class="nav-section-label">SYSTEM</div>
+      <a href="settings.html" class="nav-link active"><span class="nav-icon">⚙️</span><span data-t="nav_settings">ការកំណត់</span></a>
+    </nav>
+    <div class="sidebar-footer">
+      <div class="lang-switcher">
+        <button class="lang-btn" data-lang="km">🇰🇭 ខ្មែរ</button>
+        <button class="lang-btn" data-lang="en">🇬🇧 EN</button>
+      </div>
+    </div>
+  </aside>
+
+  <div class="main">
+    <header class="header">
+      <div class="header-left">
+        <button class="sidebar-toggle" id="sidebar-toggle">☰</button>
+        <div>
+          <div class="page-title" data-t="settings_title">ការកំណត់ប្រព័ន្ធ</div>
+          <div class="page-subtitle">Littlemaker v2.0</div>
+        </div>
+      </div>
+      <div class="header-right">
+        <div id="header-user"></div>
+        <button class="btn-icon-header" id="btn-notif">🔔<span class="notif-badge" id="notif-count" style="display:none">0</span></button>
+        <button class="btn-icon-header" id="btn-theme">🌙</button>
+        <button class="btn-primary" id="btn-save-settings">💾 <span data-t="settings_save_btn">រក្សាទុកការកំណត់</span></button>
+      </div>
+    </header>
+
+    <div class="content">
+      <div style="display:grid;grid-template-columns:1fr 1fr;gap:20px;">
+
+        <!-- Left column -->
+        <div>
+          <!-- Appearance -->
+          <div class="card">
+            <div class="settings-section-title" data-t="settings_appearance">🎨 ភាពបង្ហាញ</div>
+
+            <div class="settings-row">
+              <div>
+                <div class="settings-row-label" data-t="settings_language">ភាសា</div>
+                <div class="settings-row-desc">Language / ភាសា</div>
+              </div>
+              <div class="lang-radio-group">
+                <label class="lang-radio-label">
+                  <input type="radio" class="lang-radio" name="lang" value="km"> 🇰🇭 ខ្មែរ
+                </label>
+                <label class="lang-radio-label">
+                  <input type="radio" class="lang-radio" name="lang" value="en"> 🇬🇧 English
+                </label>
+              </div>
+            </div>
+
+            <div class="settings-row">
+              <div>
+                <div class="settings-row-label" data-t="settings_theme">របៀបបង្ហាញ</div>
+                <div class="settings-row-desc">Theme / Light · Dark · Auto</div>
+              </div>
+              <div class="settings-row-ctrl">
+                <button class="theme-btn" data-theme="light" data-t="settings_theme_light">☀️ ភ្លឺ</button>
+                <button class="theme-btn" data-theme="dark" data-t="settings_theme_dark">🌙 យប់</button>
+                <button class="theme-btn" data-theme="auto" data-t="settings_theme_auto">🔄 ស្វ័យ</button>
+              </div>
+            </div>
+          </div>
+
+          <!-- Business Info -->
+          <div class="card">
+            <div class="settings-section-title" data-t="settings_business">🏪 ព័ត៌មានហាង</div>
+            <div class="form-grid">
+              <div class="form-group full">
+                <label data-t="settings_biz_name">ឈ្មោះហាង</label>
+                <input type="text" id="s-biz-name" class="form-input" placeholder="Littlemaker Store">
+              </div>
+              <div class="form-group">
+                <label data-t="settings_biz_phone">លេខទូរស័ព្ទ</label>
+                <input type="text" id="s-biz-phone" class="form-input" placeholder="012 345 678">
+              </div>
+              <div class="form-group">
+                <label data-t="settings_biz_address">អាសយដ្ឋាន</label>
+                <input type="text" id="s-biz-address" class="form-input" placeholder="ភ្នំពេញ">
+              </div>
+              <div class="form-group full">
+                <label data-t="settings_receipt_footer">អត្ថបទក្រោមវិក្កយបត្រ</label>
+                <textarea id="s-receipt-footer" class="form-input" rows="2" placeholder="អរគុណសម្រាប់ការទិញ!"></textarea>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!-- Right column -->
+        <div>
+          <!-- Data stats -->
+          <div class="card">
+            <div class="settings-section-title" data-t="settings_data">💾 ការគ្រប់គ្រងទិន្នន័យ</div>
+
+            <div class="settings-info-grid">
+              <div class="info-card">
+                <div class="info-card-val" id="info-products">0</div>
+                <div class="info-card-label" data-t="nav_products">ផលិតផល</div>
+              </div>
+              <div class="info-card">
+                <div class="info-card-val" id="info-sales">0</div>
+                <div class="info-card-label" data-t="nav_sales">ការលក់</div>
+              </div>
+              <div class="info-card">
+                <div class="info-card-val" id="info-purchases">0</div>
+                <div class="info-card-label" data-t="nav_purchases">ការទិញ</div>
+              </div>
+            </div>
+
+            <div style="margin-top:18px;display:flex;flex-direction:column;gap:10px;">
+              <div style="font-size:13px;font-weight:700;color:var(--text-muted);text-transform:uppercase;letter-spacing:0.5px;">នាំចេញ CSV</div>
+              <div style="display:flex;gap:8px;flex-wrap:wrap;">
+                <button class="btn-data" id="btn-export-products">📦 <span data-t="nav_products">ផលិតផល</span></button>
+                <button class="btn-data" id="btn-export-sales">💰 <span data-t="nav_sales">ការលក់</span></button>
+                <button class="btn-data" id="btn-export-purchases">🛒 <span data-t="nav_purchases">ការទិញ</span></button>
+              </div>
+
+              <div style="font-size:13px;font-weight:700;color:var(--text-muted);text-transform:uppercase;letter-spacing:0.5px;margin-top:6px;">Backup / Restore</div>
+              <div style="display:flex;gap:8px;flex-wrap:wrap;">
+                <button class="btn-data" id="btn-export-json">⬇️ <span data-t="settings_export_json">នាំចេញ JSON</span></button>
+                <button class="btn-data" id="btn-import-json">⬆️ <span data-t="settings_import_json">នាំចូល JSON</span></button>
+              </div>
+              <input type="file" id="import-file" accept=".json" style="display:none">
+
+              <div style="border-top:1px solid var(--border);padding-top:14px;margin-top:4px;">
+                <button class="btn-data danger" id="btn-reset">🗑 <span data-t="settings_reset">លុបទិន្នន័យទាំងអស់</span></button>
+              </div>
+            </div>
+          </div>
+
+          <!-- User Management -->
+          <div class="card" id="users">
+            <div class="settings-section-title" data-t="settings_users">👥 គ្រប់គ្រងអ្នកប្រើ</div>
+            <div id="user-list" style="margin-bottom:14px;"></div>
+            <button class="btn-data" id="btn-add-user">➕ <span data-t="user_add">បន្ថែមអ្នកប្រើ</span></button>
+          </div>
+
+          <!-- About -->
+          <div class="card">
+            <div class="settings-section-title" data-t="settings_about">ℹ️ អំពីប្រព័ន្ធ</div>
+            <div class="about-box">
+              <div class="about-logo">🏪</div>
+              <div>
+                <div class="about-name">Littlemaker</div>
+                <div class="about-ver">v2.0 — ប្រព័ន្ធគ្រប់គ្រងអាជីវកម្ម</div>
+                <div class="about-ver" style="margin-top:4px;">🌙 Dark Mode  ·  🌐 KH/EN  ·  🖨️ Print  ·  📥 CSV Export</div>
+              </div>
+            </div>
+            <div style="margin-top:14px;font-size:13px;color:var(--text-muted);line-height:1.8;">
+              <strong>Keyboard Shortcuts:</strong><br>
+              <code>Ctrl + N</code> — បន្ថែមថ្មី<br>
+              <code>Ctrl + P</code> — បោះពុម្ព
+            </div>
+          </div>
+        </div>
+
+      </div>
+    </div>
+  </div>
+</div>
+
+<div class="modal-overlay" id="modal">
+  <div class="modal-box">
+    <div class="modal-header">
+      <div class="modal-title" id="modal-title"></div>
+      <button class="modal-close" id="modal-close">✕</button>
+    </div>
+    <div class="modal-body" id="modal-body"></div>
+    <div class="modal-footer">
+      <button class="btn-cancel" id="modal-cancel">បោះបង់</button>
+      <button class="btn-save" id="modal-save">រក្សាទុក</button>
+    </div>
+  </div>
+</div>
+  <!-- Firebase SDK -->
+  <script src="https://www.gstatic.com/firebasejs/9.23.0/firebase-app-compat.js"></script>
+  <script src="https://www.gstatic.com/firebasejs/9.23.0/firebase-auth-compat.js"></script>
+  <script src="https://www.gstatic.com/firebasejs/9.23.0/firebase-firestore-compat.js"></script>
+  <script src="js/firebase-config.js"></script>
+
+
+<script src="js/auth.js"></script>
+<script src="js/lang.js"></script>
+<script src="js/storage.js"></script>
+<script src="js/main.js"></script>
+<script src="js/settings.js"></script>
+</body>
+</html>

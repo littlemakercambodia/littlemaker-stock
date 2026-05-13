@@ -1,0 +1,142 @@
+<!DOCTYPE html>
+<html lang="km">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Littlemaker - ផលិតផល</title>
+  <link rel="stylesheet" href="css/style.css">
+</head>
+<body>
+<div class="app">
+  <aside class="sidebar">
+    <div class="sidebar-logo">
+      <div class="logo-title">🏪 Littlemaker</div>
+      <span class="logo-sub" data-t="app_tagline">ប្រព័ន្ធគ្រប់គ្រងអាជីវកម្ម</span>
+    </div>
+    <nav class="sidebar-nav">
+      <div class="nav-section-label">MENU</div>
+      <a href="index.html" class="nav-link"><span class="nav-icon">📊</span><span data-t="nav_dashboard">ផ្ទាំងគ្រប់គ្រង</span></a>
+      <a href="products.html" class="nav-link active"><span class="nav-icon">📦</span><span data-t="nav_products">ផលិតផល</span></a>
+      <a href="sales.html" class="nav-link"><span class="nav-icon">💰</span><span data-t="nav_sales">ការលក់</span></a>
+      <a href="purchases.html" class="nav-link"><span class="nav-icon">🛒</span><span data-t="nav_purchases">ការទិញ</span></a>
+      <div class="nav-section-label">SYSTEM</div>
+      <a href="settings.html" class="nav-link"><span class="nav-icon">⚙️</span><span data-t="nav_settings">ការកំណត់</span></a>
+    </nav>
+    <div class="sidebar-footer">
+      <div class="lang-switcher">
+        <button class="lang-btn" data-lang="km">🇰🇭 ខ្មែរ</button>
+        <button class="lang-btn" data-lang="en">🇬🇧 EN</button>
+      </div>
+    </div>
+  </aside>
+
+  <div class="main">
+    <header class="header">
+      <div class="header-left">
+        <button class="sidebar-toggle" id="sidebar-toggle">☰</button>
+        <div>
+          <div class="page-title" data-t="manage_products">គ្រប់គ្រងផលិតផល</div>
+          <div class="page-subtitle" id="product-count"></div>
+        </div>
+      </div>
+      <div class="header-right">
+        <div id="header-user"></div>
+        <button class="btn-icon-header" id="btn-print" title="Print">🖨️</button>
+        <button class="btn-icon-header" id="btn-notif">🔔<span class="notif-badge" id="notif-count" style="display:none">0</span></button>
+        <button class="btn-icon-header" id="btn-theme">🌙</button>
+        <button class="btn-primary" id="btn-add">+ <span data-t="add_product">បន្ថែមផលិតផល</span></button>
+      </div>
+    </header>
+
+    <div class="content">
+      <!-- Tabs -->
+      <div class="tab-bar">
+        <button class="tab-btn active" data-tab="products">
+          <span>📦</span> <span data-t="nav_products">ផលិតផល</span>
+        </button>
+        <button class="tab-btn" data-tab="recycle">
+          <span>🗑</span> <span data-t="recycle_bin">Recycle Bin</span>
+          <span class="bin-badge" id="bin-badge" style="display:none">0</span>
+        </button>
+        <button class="tab-btn" data-tab="history">
+          <span>📋</span> <span data-t="nav_history">History</span>
+        </button>
+      </div>
+
+      <!-- Main toolbar (products tab only) -->
+      <div class="toolbar" id="toolbar-main">
+        <div class="search-wrap">
+          <span class="search-icon">🔍</span>
+          <input type="text" class="search-input" id="search-input" data-tp="search">
+        </div>
+        <select class="filter-select" id="cat-filter"></select>
+        <button class="btn-toolbar" id="btn-csv">📥 <span data-t="export_csv">CSV</span></button>
+        <button class="btn-toolbar print" onclick="printPage()">🖨️ <span data-t="print_page">បោះពុម្ព</span></button>
+      </div>
+
+      <!-- Recycle bin action bar -->
+      <div class="toolbar" id="toolbar-recycle" style="display:none">
+        <span style="color:var(--text-muted);font-size:13px" data-t="bin_desc">ផលិតផលដែលបានលុបនឹងស្ថិតនៅទីនេះ អ្នកអាច Restore ពេលណាក៏បាន</span>
+        <button class="btn-toolbar btn-danger-soft" id="btn-empty-bin">🗑 <span data-t="empty_bin">លុបទាំងអស់</span></button>
+      </div>
+
+      <!-- History action bar -->
+      <div class="toolbar" id="toolbar-history" style="display:none">
+        <span style="color:var(--text-muted);font-size:13px" data-t="history_desc">ប្រវត្តិការផ្លាស់ប្ដូរផលិតផលទាំងអស់</span>
+        <button class="btn-toolbar btn-danger-soft" id="btn-clear-history">🗑 <span data-t="clear_history">លុប History</span></button>
+      </div>
+
+      <div class="card" style="padding:0;overflow:hidden;">
+        <div class="table-wrap">
+          <table>
+            <thead id="table-head"></thead>
+            <tbody id="product-list">
+              <tr><td colspan="9" class="no-data">កំពុងផ្ទុក...</td></tr>
+            </tbody>
+          </table>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<div class="modal-overlay" id="modal">
+  <div class="modal-box">
+    <div class="modal-header">
+      <div class="modal-title" id="modal-title"></div>
+      <button class="modal-close" id="modal-close">✕</button>
+    </div>
+    <div class="modal-body" id="modal-body"></div>
+    <div class="modal-footer">
+      <button class="btn-cancel" id="modal-cancel">បោះបង់</button>
+      <button class="btn-save" id="modal-save">រក្សាទុក</button>
+    </div>
+  </div>
+</div>
+  <!-- Firebase SDK -->
+  <script src="https://www.gstatic.com/firebasejs/9.23.0/firebase-app-compat.js"></script>
+  <script src="https://www.gstatic.com/firebasejs/9.23.0/firebase-auth-compat.js"></script>
+  <script src="https://www.gstatic.com/firebasejs/9.23.0/firebase-firestore-compat.js"></script>
+  <script src="js/firebase-config.js"></script>
+
+
+<script src="js/auth.js"></script>
+<script src="js/lang.js"></script>
+<script src="js/storage.js"></script>
+<script src="js/main.js"></script>
+<script src="js/products.js"></script>
+<script>
+// Tab toolbar visibility
+document.addEventListener('DOMContentLoaded', () => {
+  document.querySelectorAll('.tab-btn').forEach(btn => {
+    btn.addEventListener('click', () => {
+      const tab = btn.dataset.tab;
+      document.getElementById('toolbar-main').style.display = tab === 'products' ? '' : 'none';
+      document.getElementById('toolbar-recycle').style.display = tab === 'recycle' ? '' : 'none';
+      document.getElementById('toolbar-history').style.display = tab === 'history' ? '' : 'none';
+    });
+  });
+});
+</script>
+</body>
+</html>

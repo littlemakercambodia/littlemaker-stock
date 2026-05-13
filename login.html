@@ -1,0 +1,292 @@
+<!DOCTYPE html>
+<html lang="km">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Littlemaker — ចូលប្រើប្រាស់</title>
+  <link rel="stylesheet" href="css/style.css">
+  <style>
+    body { display: flex; align-items: center; justify-content: center; min-height: 100vh; background: var(--bg); }
+
+    .login-wrap {
+      width: 100%; max-width: 420px; padding: 24px;
+    }
+
+    /* Brand */
+    .login-brand {
+      text-align: center; margin-bottom: 32px;
+    }
+    .login-brand-icon {
+      font-size: 52px; display: block; margin-bottom: 10px;
+      animation: floatIcon 3s ease-in-out infinite;
+    }
+    @keyframes floatIcon {
+      0%,100% { transform: translateY(0); }
+      50%      { transform: translateY(-6px); }
+    }
+    .login-brand-name {
+      font-size: 26px; font-weight: 800; color: var(--primary); letter-spacing: 0.5px;
+    }
+    [data-theme="dark"] .login-brand-name { color: var(--accent); }
+    .login-brand-sub {
+      font-size: 13px; color: var(--text-muted); margin-top: 4px;
+    }
+
+    /* Card */
+    .login-card {
+      background: var(--card); border-radius: 18px; padding: 32px;
+      box-shadow: var(--shadow-md); position: relative; overflow: hidden;
+    }
+    .login-card::before {
+      content: ''; position: absolute; top: 0; left: 0; right: 0; height: 4px;
+      background: linear-gradient(90deg, var(--primary), var(--accent));
+    }
+
+    .login-title {
+      font-size: 18px; font-weight: 700; margin-bottom: 6px;
+    }
+    .login-desc {
+      font-size: 13px; color: var(--text-muted); margin-bottom: 24px;
+    }
+
+    /* Fields */
+    .login-field { margin-bottom: 18px; }
+    .login-field label {
+      display: block; font-size: 13px; font-weight: 700; margin-bottom: 6px;
+    }
+    .login-input-wrap { position: relative; }
+    .login-input-icon {
+      position: absolute; left: 13px; top: 50%; transform: translateY(-50%);
+      font-size: 16px; pointer-events: none;
+    }
+    .login-input {
+      width: 100%; padding: 12px 14px 12px 40px;
+      border-radius: 10px; border: 1.5px solid var(--border);
+      background: var(--bg); font-family: inherit; font-size: 15px;
+      color: var(--text); transition: border-color 0.2s, box-shadow 0.2s;
+    }
+    .login-input:focus {
+      outline: none; border-color: var(--accent);
+      box-shadow: 0 0 0 3px rgba(212,168,67,0.15);
+    }
+    .login-eye {
+      position: absolute; right: 12px; top: 50%; transform: translateY(-50%);
+      background: none; border: none; cursor: pointer; font-size: 16px;
+      color: var(--text-muted); padding: 4px;
+    }
+
+    /* Remember row */
+    .login-row {
+      display: flex; align-items: center; justify-content: space-between;
+      margin-bottom: 22px; font-size: 13px;
+    }
+    .login-remember { display: flex; align-items: center; gap: 7px; cursor: pointer; font-weight: 600; }
+    .login-remember input { accent-color: var(--primary); width: 15px; height: 15px; cursor: pointer; }
+
+    /* Button */
+    .login-btn {
+      width: 100%; padding: 13px; border-radius: 11px; border: none;
+      background: var(--primary); color: #fff;
+      font-family: inherit; font-size: 16px; font-weight: 700;
+      cursor: pointer; transition: all 0.2s; letter-spacing: 0.3px;
+      display: flex; align-items: center; justify-content: center; gap: 8px;
+    }
+    .login-btn:hover { background: var(--primary-light); transform: translateY(-1px); box-shadow: 0 4px 16px rgba(26,61,43,0.3); }
+    .login-btn:active { transform: translateY(0); }
+    [data-theme="dark"] .login-btn { box-shadow: 0 4px 16px rgba(37,168,112,0.3); }
+
+    /* Error */
+    .login-error {
+      background: var(--danger-pale); color: var(--danger);
+      border: 1px solid var(--danger); border-radius: 9px;
+      padding: 10px 14px; font-size: 13px; font-weight: 600;
+      margin-bottom: 16px; display: none; align-items: center; gap: 8px;
+      animation: shake 0.35s ease;
+    }
+    .login-error.show { display: flex; }
+    @keyframes shake {
+      0%,100% { transform: translateX(0); }
+      25%      { transform: translateX(-6px); }
+      75%      { transform: translateX(6px); }
+    }
+
+
+
+    /* Theme toggle */
+    .login-theme {
+      position: absolute; top: 16px; right: 16px;
+      background: none; border: 1.5px solid var(--border);
+      border-radius: 8px; padding: 6px 10px; cursor: pointer;
+      font-size: 16px; color: var(--text); transition: all 0.2s;
+    }
+    .login-theme:hover { border-color: var(--accent); }
+
+    /* Footer */
+    .login-footer { text-align: center; margin-top: 20px; font-size: 12px; color: var(--text-muted); }
+  </style>
+</head>
+<body>
+<button class="login-theme" id="btn-theme-login" title="Toggle theme">🌙</button>
+
+<div class="login-wrap">
+  <!-- Brand -->
+  <div class="login-brand">
+    <span class="login-brand-icon">🏪</span>
+    <div class="login-brand-name">Littlemaker</div>
+    <div class="login-brand-sub" id="brand-sub">ប្រព័ន្ធគ្រប់គ្រងអាជីវកម្ម</div>
+  </div>
+
+  <!-- Card -->
+  <div class="login-card">
+    <div class="login-title" id="login-title">ចូលប្រើប្រាស់</div>
+    <div class="login-desc" id="login-desc">សូមបញ្ចូលព័ត៌មានដើម្បីចូល</div>
+
+    <!-- Error -->
+    <div class="login-error" id="login-error">
+      <span>⚠</span><span id="error-msg">ឈ្មោះអ្នកប្រើ ឬ លេខសម្ងាត់មិនត្រឹមត្រូវ!</span>
+    </div>
+
+    <!-- Username -->
+    <div class="login-field">
+      <label id="lbl-user">ឈ្មោះអ្នកប្រើ</label>
+      <div class="login-input-wrap">
+        <span class="login-input-icon">👤</span>
+        <input type="text" id="f-username" class="login-input" autocomplete="username"
+               placeholder="" autocapitalize="none">
+      </div>
+    </div>
+
+    <!-- Password -->
+    <div class="login-field">
+      <label id="lbl-pass">លេខសម្ងាត់</label>
+      <div class="login-input-wrap">
+        <span class="login-input-icon">🔒</span>
+        <input type="password" id="f-password" class="login-input" autocomplete="current-password"
+               placeholder="••••••••">
+        <button class="login-eye" id="eye-btn" tabindex="-1">👁</button>
+      </div>
+    </div>
+
+    <!-- Remember -->
+    <div class="login-row">
+      <label class="login-remember">
+        <input type="checkbox" id="f-remember"> <span id="lbl-remember">ចងចាំខ្ញុំ (7 ថ្ងៃ)</span>
+      </label>
+      <div style="font-size:12px;color:var(--text-muted);" id="lbl-lang-switch">
+        <span onclick="switchLoginLang('km')" style="cursor:pointer;">🇰🇭</span> ·
+        <span onclick="switchLoginLang('en')" style="cursor:pointer;">🇬🇧</span>
+      </div>
+    </div>
+
+    <!-- Submit -->
+    <button class="login-btn" id="login-btn">
+      <span>🔓</span><span id="btn-label">ចូល</span>
+    </button>
+  </div>
+
+  <div class="login-footer">Littlemaker v2.0 · Business Management System</div>
+</div>
+  <!-- Firebase SDK -->
+  <script src="https://www.gstatic.com/firebasejs/9.23.0/firebase-app-compat.js"></script>
+  <script src="https://www.gstatic.com/firebasejs/9.23.0/firebase-auth-compat.js"></script>
+  <script src="https://www.gstatic.com/firebasejs/9.23.0/firebase-firestore-compat.js"></script>
+  <script src="js/firebase-config.js"></script>
+
+
+<script src="js/lang.js"></script>
+<script src="js/auth.js"></script>
+<script>
+  // Apply theme
+  (function() {
+    const theme = localStorage.getItem('lm_theme') || 'light';
+    let resolved = theme;
+    if (theme === 'auto') resolved = window.matchMedia('(prefers-color-scheme: dark)').matches ? 'dark' : 'light';
+    document.documentElement.setAttribute('data-theme', resolved);
+  })();
+
+  // Seed default admin and check if already logged in (async)
+  (async () => {
+    await Auth.seedDefaultUser();
+    const fbUser = await window.waitForAuth();
+    if (fbUser && Auth.getSession()) location.href = 'index.html';
+  })();
+
+  // Toggle theme
+  document.getElementById('btn-theme-login').addEventListener('click', () => {
+    const cur = localStorage.getItem('lm_theme') || 'light';
+    const next = cur === 'light' ? 'dark' : 'light';
+    localStorage.setItem('lm_theme', next);
+    let resolved = next;
+    if (next === 'auto') resolved = window.matchMedia('(prefers-color-scheme: dark)').matches ? 'dark' : 'light';
+    document.documentElement.setAttribute('data-theme', resolved);
+    document.getElementById('btn-theme-login').textContent = resolved === 'dark' ? '☀️' : '🌙';
+  });
+
+  // Show/hide password
+  document.getElementById('eye-btn').addEventListener('click', () => {
+    const inp = document.getElementById('f-password');
+    inp.type = inp.type === 'password' ? 'text' : 'password';
+  });
+
+  // Login
+  async function doLogin() {
+    const username = document.getElementById('f-username').value.trim();
+    const password = document.getElementById('f-password').value;
+    const remember = document.getElementById('f-remember').checked;
+
+    if (!username || !password) {
+      showError(currentLang === 'km' ? 'សូមបំពេញព័ត៌មានចាំបាច់!' : 'Please fill in all fields!');
+      return;
+    }
+
+    const btn = document.getElementById('login-btn');
+    btn.disabled = true;
+    btn.innerHTML = '<span>⏳</span><span>' + (currentLang === 'km' ? 'កំពុងផ្ទៀងផ្ទាត់...' : 'Signing in...') + '</span>';
+
+    const session = await Auth.login(username, password, remember);
+    if (session) {
+      btn.innerHTML = '<span>✅</span><span>' + (currentLang === 'km' ? 'ជោគជ័យ!' : 'Success!') + '</span>';
+      setTimeout(() => { location.href = 'index.html'; }, 500);
+    } else {
+      showError(currentLang === 'km' ? 'ឈ្មោះអ្នកប្រើ ឬ លេខសម្ងាត់មិនត្រឹមត្រូវ!' : 'Incorrect username or password!');
+      btn.disabled = false;
+      btn.innerHTML = '<span>🔓</span><span>' + (currentLang === 'km' ? 'ចូល' : 'Sign In') + '</span>';
+      document.getElementById('f-password').value = '';
+      document.getElementById('f-password').focus();
+    }
+  }
+
+  function showError(msg) {
+    const el = document.getElementById('login-error');
+    document.getElementById('error-msg').textContent = msg;
+    el.classList.remove('show');
+    void el.offsetWidth;
+    el.classList.add('show');
+  }
+
+  function switchLoginLang(lang) {
+    currentLang = lang;
+    localStorage.setItem('lm_lang', lang);
+    location.reload();
+  }
+
+  // Apply current lang to login page
+  const LNG = {
+    km: { title:'ចូលប្រើប្រាស់', desc:'សូមបញ្ចូលព័ត៌មានដើម្បីចូល', user:'ឈ្មោះអ្នកប្រើ', pass:'លេខសម្ងាត់', rem:'ចងចាំខ្ញុំ (7 ថ្ងៃ)', btn:'ចូល', sub:'ប្រព័ន្ធគ្រប់គ្រងអាជីវកម្ម' },
+    en: { title:'Sign In', desc:'Enter your credentials to continue', user:'Username', pass:'Password', rem:'Remember me (7 days)', btn:'Sign In', sub:'Business Management System' },
+  };
+  const L = LNG[currentLang] || LNG.km;
+  document.getElementById('login-title').textContent  = L.title;
+  document.getElementById('login-desc').textContent   = L.desc;
+  document.getElementById('lbl-user').textContent     = L.user;
+  document.getElementById('lbl-pass').textContent     = L.pass;
+  document.getElementById('lbl-remember').textContent = L.rem;
+  document.getElementById('btn-label').textContent    = L.btn;
+  document.getElementById('brand-sub').textContent    = L.sub;
+
+  // Enter key
+  document.addEventListener('keydown', e => { if (e.key === 'Enter') doLogin(); });
+  document.getElementById('login-btn').addEventListener('click', doLogin);
+</script>
+</body>
+</html>
