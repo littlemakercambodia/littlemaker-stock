@@ -2,24 +2,53 @@ document.addEventListener('DOMContentLoaded', async () => {
   await authGuard();
   loadSettingsForm();
   renderUserList();
-  document.getElementById('btn-add-user')?.addEventListener('click', openAddUser);
-  document.getElementById('btn-save-settings').addEventListener('click', saveSettingsForm);
-  document.getElementById('btn-export-json').addEventListener('click', exportAll);
-  document.getElementById('btn-import-json').addEventListener('click', () => document.getElementById('import-file').click());
-  document.getElementById('import-file').addEventListener('change', importAll);
-  document.getElementById('btn-export-products').addEventListener('click', exportProducts);
-  document.getElementById('btn-export-sales').addEventListener('click', exportSales);
-  document.getElementById('btn-export-purchases').addEventListener('click', exportPurchases);
-  document.getElementById('btn-reset').addEventListener('click', resetData);
 
-  // Theme buttons
+  // បានបន្ថែម Optional Chaining (?.) ទៅលើគ្រប់ប៊ូតុងដើម្បីការពារកុំឱ្យកូដគាំង
+  document.getElementById('btn-add-user')?.addEventListener('click', openAddUser);
+  document.getElementById('btn-save-settings')?.addEventListener('click', saveSettingsForm);
+  document.getElementById('btn-export-json')?.addEventListener('click', exportAll);
+  
+  // សម្រាប់ការ Import ត្រូវប្រាកដថាធាតុទាំងពីរនេះមាន
+  const btnImportJson = document.getElementById('btn-import-json');
+  const importFile = document.getElementById('import-file');
+  if (btnImportJson && importFile) {
+    btnImportJson.addEventListener('click', () => importFile.click());
+    importFile.addEventListener('change', importAll);
+  }
+
+  document.getElementById('btn-export-products')?.addEventListener('click', exportProducts);
+  document.getElementById('btn-export-sales')?.addEventListener('click', exportSales);
+  document.getElementById('btn-export-purchases')?.addEventListener('click', exportPurchases);
+  document.getElementById('btn-reset')?.addEventListener('click', resetData);
+
+  // Theme buttons: បន្ថែមការផ្លាស់ប្តូរភ្លាមៗ (Live Preview)
   document.querySelectorAll('.theme-btn').forEach(btn => {
     btn.addEventListener('click', () => {
       document.querySelectorAll('.theme-btn').forEach(b => b.classList.remove('active'));
       btn.classList.add('active');
+      applyTheme(btn.dataset.theme); // អនុវត្តពណ៌ភ្លាមៗដើម្បីមើលជាមុន
     });
   });
+
+  // Language buttons: ដោះស្រាយបញ្ហា Browser ចាស់ៗដែលមិនស្គាល់ CSS :has()
+  document.querySelectorAll('.lang-radio').forEach(r => {
+    r.addEventListener('change', updateLangVisuals);
+  });
 });
+
+// អនុគមន៍ជំនួយសម្រាប់ប្តូរពណ៌ប៊ូតុងភាសា
+function updateLangVisuals() {
+  document.querySelectorAll('.lang-radio-label').forEach(lbl => {
+    const radio = lbl.querySelector('.lang-radio');
+    if (radio && radio.checked) {
+      lbl.style.borderColor = 'var(--accent)';
+      lbl.style.background = 'var(--accent-pale)';
+    } else {
+      lbl.style.borderColor = 'var(--border)';
+      lbl.style.background = 'var(--bg)';
+    }
+  });
+}
 
 function loadSettingsForm() {
   const s = DB.getSettings();
@@ -27,21 +56,24 @@ function loadSettingsForm() {
   document.querySelectorAll('.lang-radio').forEach(r => {
     r.checked = (r.value === currentLang);
   });
+  updateLangVisuals(); // ហៅឱ្យបង្ហាញពណ៌ត្រឹមត្រូវពេលចូលទំព័រដំបូង
+
   // Theme
   const theme = getTheme();
   document.querySelectorAll('.theme-btn').forEach(btn => {
     btn.classList.toggle('active', btn.dataset.theme === theme);
   });
   // Business info
-  document.getElementById('s-biz-name').value = s.bizName || '';
-  document.getElementById('s-biz-phone').value = s.bizPhone || '';
-  document.getElementById('s-biz-address').value = s.bizAddress || '';
-  document.getElementById('s-receipt-footer').value = s.receiptFooter || t('receipt_thank');
+  if (document.getElementById('s-biz-name')) document.getElementById('s-biz-name').value = s.bizName || '';
+  if (document.getElementById('s-biz-phone')) document.getElementById('s-biz-phone').value = s.bizPhone || '';
+  if (document.getElementById('s-biz-address')) document.getElementById('s-biz-address').value = s.bizAddress || '';
+  if (document.getElementById('s-receipt-footer')) document.getElementById('s-receipt-footer').value = s.receiptFooter || t('receipt_thank');
+  
   // Stats
   const stats = DB.getStats();
-  document.getElementById('info-products').textContent = stats.productCount;
-  document.getElementById('info-sales').textContent = DB.getSales().length;
-  document.getElementById('info-purchases').textContent = DB.getPurchases().length;
+  if (document.getElementById('info-products')) document.getElementById('info-products').textContent = stats.productCount;
+  if (document.getElementById('info-sales')) document.getElementById('info-sales').textContent = DB.getSales().length;
+  if (document.getElementById('info-purchases')) document.getElementById('info-purchases').textContent = DB.getPurchases().length;
 }
 
 function saveSettingsForm() {
@@ -58,10 +90,10 @@ function saveSettingsForm() {
   }
   // Business info
   const s = {
-    bizName: document.getElementById('s-biz-name').value.trim(),
-    bizPhone: document.getElementById('s-biz-phone').value.trim(),
-    bizAddress: document.getElementById('s-biz-address').value.trim(),
-    receiptFooter: document.getElementById('s-receipt-footer').value.trim(),
+    bizName: document.getElementById('s-biz-name')?.value.trim() || '',
+    bizPhone: document.getElementById('s-biz-phone')?.value.trim() || '',
+    bizAddress: document.getElementById('s-biz-address')?.value.trim() || '',
+    receiptFooter: document.getElementById('s-receipt-footer')?.value.trim() || '',
   };
   DB.saveSettings(s);
   showToast(t('settings_saved'));
@@ -224,8 +256,9 @@ async function openEditUser(uid) {
     const role    = document.getElementById('fu-role').value;
     const pass    = document.getElementById('fu-pass').value;
     if (!display) { showToast(t('fill_required'), 'error'); return; }
-    await Auth.updateUser(uid, display, role, pass || null);
-    Modal.close(); showToast(t('saved')); renderUserList();
+    Auth.updateUser(uid, display, role, pass || null).then(() => {
+        Modal.close(); showToast(t('saved')); renderUserList();
+    });
   });
 }
 
